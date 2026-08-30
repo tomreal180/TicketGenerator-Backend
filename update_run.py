@@ -3,7 +3,7 @@ import pandas as pd
 import os
 from app import local_df
 
-API_URL = "https://script.google.com/macros/s/AKfycbxsWKDPtAAex8imwHWMVg4TSV_s-yjCHINEw5PCoxJ4Kdq51sijcAG1InXrL3YMe1oM/exec"
+API_URL = "https://script.google.com/macros/s/AKfycbwRXwpc6RBPZG3i4w9v4kO9Vm2YG_PNKdspI1Ybni2f_x3iMsdbUbW3qkGm9giF-gDQ2g/exec"
 LOCAL_DATA_FILE = "Key.csv"
 
 def fetch_and_update_from_api():
@@ -11,7 +11,10 @@ def fetch_and_update_from_api():
     global local_df
     print("Fetching fresh data from API...")
     try:
-        response = requests.get(API_URL)
+        response = requests.post(API_URL,
+                                 headers={'Content-Type': 'text/plain;charset=utf-8'},
+                                 allow_redirects=True,
+                                 json={"action": "getKey"})
         if response.status_code == 200:
             json_data = response.json()
             if json_data.get('status') == 'success':

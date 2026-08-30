@@ -27,8 +27,8 @@ def load_local_data():
             df.columns = df.columns.str.strip()
             if 'EMAIL' in df.columns and 'DOB' in df.columns:
                 df['EMAIL'] = df['EMAIL'].astype(str).str.strip().str.lower()
-                # If DOB from CSV is already DD/MM/YYYY, just strip
-                df['DOB'] = df['DOB'].astype(str).str.strip()
+                # If DOB from CSV is already DD/MM/YYYY, just strip, also replace . and - with /
+                df['DOB'] = df['DOB'].astype(str).str.strip().str.replace('.', '/').str.replace('-', '/')
             local_df = df
             print(f"Loaded {len(local_df)} records from local cache.")
         except Exception as e:
@@ -78,7 +78,7 @@ def generate_ticket():
         return jsonify({"error": "No JSON provided"}), 400
         
     email = data.get('email', '').strip().lower()
-    dob = data.get('dob', '').strip()
+    dob = data.get('dob', '').strip().replace('.', '/').replace('-', '/')
     
     if not email or not dob:
         return jsonify({"error": "Vui lòng nhập Email và Ngày sinh"}), 400

@@ -5,7 +5,14 @@ import os
 from ticket_generator import generate_ticket_in_memory
 
 app = Flask(__name__)
-CORS(app)
+
+# Cấu hình bảo mật CORS
+if os.environ.get('RENDER'):
+    # Môi trường Production (Render): CHỈ cho phép tên miền Vercel của bạn
+    CORS(app, origins=["https://ticket-generator-frontend-alpha.vercel.app"])
+else:
+    # Môi trường Local (Máy tính của bạn): Cho phép tự do để dễ test
+    CORS(app)
 
 # Chỉ bật Swagger (Tài liệu API) khi chạy ở Local, tắt trên Render
 if not os.environ.get('RENDER'):

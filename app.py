@@ -1,10 +1,19 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import pandas as pd
 import os
 from ticket_generator import generate_ticket_in_memory
 
 app = Flask(__name__)
+
+# Khởi tạo bộ đếm chống Spam (10 requests / 1 phút)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    storage_uri="memory://"
+)
 
 # Cấu hình bảo mật CORS
 if os.environ.get('RENDER'):
@@ -46,6 +55,7 @@ def load_local_data():
 load_local_data()
 
 @app.route('/api/generate-ticket', methods=['POST'])
+@limiter.limit("10 per minute")
 def generate_ticket():
     """
     Tạo vé PDF dựa trên Email và Ngày sinh (DOB).

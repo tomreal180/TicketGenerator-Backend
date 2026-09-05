@@ -26,8 +26,8 @@ app = Flask(__name__)
 # Khởi tạo Swagger (CHỈ CHẠY Ở LOCAL, KHÔNG CHẠY TRÊN RENDER)
 if not os.environ.get('RENDER'):
     try:
-        from dotenv import load_dotenv
-        load_dotenv()
+        # from dotenv import load_dotenv
+        # load_dotenv()
         from flasgger import Swagger
         swagger_config = {
             "headers": [],

@@ -258,15 +258,9 @@ def attendance():
         return jsonify({"error": "Thiếu mã xác thực CAPTCHA"}), 400
         
     captcha_token = data['token']
-    quantity = data.get('quantity', 1)
-    
-    # Ép kiểu và kiểm tra quantity hợp lệ
-    try:
-        quantity = int(quantity)
-        if quantity < 1:
-            quantity = 1
-    except:
-        quantity = 1
+    user_name = data.get('name', 'Ẩn danh').strip()
+    if not user_name:
+        user_name = 'Ẩn danh'
     
     # 1. Gọi sang Google để xác thực Token này có phải người thật không
     try:
@@ -300,7 +294,7 @@ def attendance():
                 "action": "attendance",
                 "api_id": API_ATTENDANCE_ID,
                 "signature": signature,
-                "quantity": quantity
+                "name": user_name
             },
             timeout=10 # Thời gian chờ tối đa 10s
         )

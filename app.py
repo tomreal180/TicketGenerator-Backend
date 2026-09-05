@@ -6,7 +6,7 @@ import pandas as pd
 import os
 
 # Tự động nạp biến môi trường từ file .env (nếu có)
-load_dotenv()
+# load_dotenv()
 import requests
 import hmac
 import hashlib

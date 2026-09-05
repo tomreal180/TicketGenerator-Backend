@@ -4,7 +4,6 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import pandas as pd
 import os
-from dotenv import load_dotenv
 
 # Tự động nạp biến môi trường từ file .env (nếu có)
 load_dotenv()
@@ -27,6 +26,8 @@ app = Flask(__name__)
 # Khởi tạo Swagger (CHỈ CHẠY Ở LOCAL, KHÔNG CHẠY TRÊN RENDER)
 if not os.environ.get('RENDER'):
     try:
+        from dotenv import load_dotenv
+        load_dotenv()
         from flasgger import Swagger
         swagger_config = {
             "headers": [],
